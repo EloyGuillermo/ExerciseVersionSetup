@@ -21,6 +21,4 @@ jobs:
         sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
         git config --global user.email "eloy.g.marquez@gmail.com"
         git config --global user.name "EloyGuillermo"
-        git add setup.py
-        git commit -m "New Version"
-        git push
+        cat setup.py
