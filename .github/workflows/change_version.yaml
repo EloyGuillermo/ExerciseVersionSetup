@@ -3,7 +3,7 @@ name: Change version setup
 on: 
   pull_request:
     branches:
-      Dev
+      - Dev
 
 jobs:
   ch_ver:
