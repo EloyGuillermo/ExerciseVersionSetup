@@ -1,0 +1,39 @@
+name: Change version setup
+
+on: 
+  push:
+    branches:
+        main
+
+jobs:
+  ch_ver:
+    name: Change version setup
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Set Version
+      run: |
+        echo ls
+        ls
+        # Leer la versión actual del archivo setup.py
+        version=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
+        
+        # Dividir la versión en sus componentes (por ejemplo, 1.0.0 -> 1, 0, 0)
+        IFS='.' read -r -a version_parts <<< "$version"
+        
+        # Incrementar el número del medio en uno
+        ((version_parts[1]++))
+        
+        # Reconstruir la versión actualizada
+        new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+        
+        # Reemplazar la versión en el archivo setup.py
+        sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
+        
+        # Realizar los comandos git add, git commit y git push
+        git add setup.py
+        git commit -m "New Version"
+        git push
