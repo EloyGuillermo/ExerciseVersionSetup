@@ -24,8 +24,7 @@ jobs:
       run: |
         version=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
         IFS='.' read -r -a version_parts <<< "$version"
-        ((version_parts[1]++))
-        new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+        new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
         sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
         git config user.email "actions@github.com"
         git config user.name "Github Actions"
