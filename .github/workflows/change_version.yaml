@@ -2,11 +2,6 @@ name: Change version setup
 
 on: 
   workflow_dispatch:
-    inputs:
-        myInput:
-          default: "my input value"
-        myInput2:
-          default: "my input value2"
 
 jobs:
   ch_ver:
@@ -16,9 +11,6 @@ jobs:
 
     - name: Checkout Repo
       uses: actions/checkout@v3
-
-    - name: Output Inputs
-      run: echo "${{ toJSON(github.event.inputs) }}"
 
     - name: Set Version
       run: |
