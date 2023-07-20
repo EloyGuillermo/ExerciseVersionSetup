@@ -16,14 +16,12 @@ jobs:
 
     - name: Set Version
       run: |
-        git checkout Dev
         version=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
         IFS='.' read -r -a version_parts <<< "$version"
         new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
         sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
         git config user.email "actions@github.com"
         git config user.name "Github Actions"
-        git checkout Dev
         git add setup.py
         git commit -m "New Version"
         git push
