@@ -3,7 +3,7 @@ name: Change version setup
 on: 
   pull_request:
     types: 
-      opened
+      - opened
     branches:
       - main
 
