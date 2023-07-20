@@ -5,7 +5,7 @@ on:
     types: 
       opened
     branches:
-      - Dev
+      - main
 
 jobs:
   ch_ver:
@@ -15,10 +15,11 @@ jobs:
 
     - name: Checkout Repo
       uses: actions/checkout@v3
+      with:
+        ref: Dev
 
     - name: Set Version
       run: |
-        git pull origin Dev
         version=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
         IFS='.' read -r -a version_parts <<< "$version"
         new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
