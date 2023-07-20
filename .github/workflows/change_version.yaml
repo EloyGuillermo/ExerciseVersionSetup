@@ -2,8 +2,10 @@ name: Change version setup
 
 on: 
   pull_request:
+    types: 
+      opened
     branches:
-      - main
+      - Dev
 
 jobs:
   ch_ver:
