@@ -24,4 +24,4 @@ jobs:
         git config user.name "Github Actions"
         git add setup.py
         git commit -m "New Version"
-        git push
+        git push origin HEAD:Dev
