@@ -22,7 +22,6 @@ jobs:
         sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
         git config user.email "actions@github.com"
         git config user.name "Github Actions"
-        git checkout Dev
         git add setup.py
         git commit -m "New Version"
         git push
