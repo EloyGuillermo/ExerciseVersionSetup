@@ -1,9 +1,11 @@
 name: Change version setup
 
 on: 
-  push: 
+  pull_request:
+    types: 
+      - opened
     branches:
-      - Dev
+      - main
 
 jobs:
   ch_ver:
