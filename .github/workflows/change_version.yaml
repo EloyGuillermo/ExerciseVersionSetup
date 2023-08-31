@@ -16,6 +16,9 @@ jobs:
 
     - name: Checkout Repo
       uses: actions/checkout@v3
+    
+    - name: Fetch All Branches
+      run: git fetch --all
 
     - name: Merge Dev to Main
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
