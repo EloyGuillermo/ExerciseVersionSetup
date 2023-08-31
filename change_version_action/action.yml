@@ -11,7 +11,6 @@ runs:
         sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
         git config user.email "actions@github.com"
         git config user.name "Github Actions"
-        git add setup.py
-        git commit -m "New Version: $new_version"
-        git push origin HEAD:Dev
+        git tag $new_version
+        git push origin $new_version
       shell: bash
