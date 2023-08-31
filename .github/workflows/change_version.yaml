@@ -47,4 +47,4 @@ jobs:
         sed -i "s/version=\"$VERSION\"/version=\"$new_version\"/" setup.py
         git add .
         git commit -m "New Version: $new_version"
-        git push origin Dev
+        git push
