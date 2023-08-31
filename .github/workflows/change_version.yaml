@@ -7,10 +7,6 @@ on:
         description: 'Check if it is release'
         required: false
         default: 'false'
-        options:
-          - true
-          - false
-
 
 jobs:
   ch_ver:
