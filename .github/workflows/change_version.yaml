@@ -16,20 +16,18 @@ jobs:
 
     - name: Checkout Repo
       uses: actions/checkout@v3
-    
-    - name: Fetch All Branches
-      run: git fetch --all
+      with:
+        fetch-depth: 0
 
     - name: Merge Dev to Main
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
       id: merge
       run: |
-        git checkout main
         git config user.email "actions@github.com"
         git config user.name "Github Actions"
-        git merge Dev --allow-unrelated-histories
-        git push
-        git checkout Dev
+        git checkout main
+        git merge Dev --no-ff
+        git push origin main
 
     - name: Create Tag
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
@@ -47,6 +45,6 @@ jobs:
         IFS='.' read -r -a version_parts <<< "$VERSION"
         new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
         sed -i "s/version=\"$VERSION\"/version=\"$new_version\"/" setup.py
-        git add setup.py
+        git add .
         git commit -m "New Version: $new_version"
-        git push origin HEAD:Dev
+        git push origin Dev
