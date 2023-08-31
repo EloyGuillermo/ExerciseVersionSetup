@@ -1,9 +1,13 @@
 name: Change version setup
 
-on: 
-  push: 
-    branches:
-      - Dev
+on:
+  workflow_dispatch:
+    inputs:
+      IS_RELEASE:
+        description: 'Check if it is release'
+        required: false
+        default: 'false'
+
 
 jobs:
   ch_ver:
@@ -18,3 +22,5 @@ jobs:
 
     - name: Set Version
       uses: EloyGuillermo/ExerciseVersionSetup/change_version_action@Dev
+      with:
+        is_release_input: ${{ github.event.inputs.IS_RELEASE }}

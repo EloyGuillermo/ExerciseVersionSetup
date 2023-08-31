@@ -1,6 +1,12 @@
 name: Change version setup
 description: 'Action to change version setup'
 
+inputs:
+  is_release_input:
+    description: 'Check if it is release'
+    required: false
+    default: 'false'
+
 runs:
   using: "composite"
   steps:
@@ -14,6 +20,10 @@ runs:
         git add setup.py
         git commit -m "New Version: $new_version"
         git push origin HEAD:Dev
-        git tag $new_version
-        git push origin $new_version
+        if [[ "${{ inputs.is_release_input }}" == "true" ]]; then
+          git tag "v$new_version"
+          git push origin "v$new_version"
+        else
+          echo "Not creating a release tag."
+        fi
       shell: bash
