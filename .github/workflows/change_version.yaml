@@ -23,6 +23,7 @@ jobs:
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
       id: merge
       run: |
+        git branch -a
         git checkout main
         git merge Dev
         git push
