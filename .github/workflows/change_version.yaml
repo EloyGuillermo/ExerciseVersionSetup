@@ -19,8 +19,30 @@ jobs:
       with:
         ref: Dev
 
-    - name: Set Version
-      uses: EloyGuillermo/ExerciseVersionSetup/change_version_action@Dev
-      if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
-      with:
-        is_release_input: ${{ github.event.inputs.IS_RELEASE }}
+    - name: Merge Dev to Main
+      id: merge
+      run: |
+        git checkout main
+        git merge Dev
+        git push
+        git checkout Dev
+
+    - name: Create Tag
+      run: |
+        VERSION=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        git tag "v$new_version"
+        git push origin "v$new_version"
+
+    - name: Update version in Dev
+      env:
+        VERSION: ${{ env.VERSION }}
+      run: |
+        IFS='.' read -r -a version_parts <<< "$version"
+        new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
+        sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
+        git config user.email "actions@github.com"
+        git config user.name "Github Actions"
+        git add setup.py
+        git commit -m "New Version: $new_version"
+        git push origin HEAD:Dev
