@@ -45,6 +45,6 @@ jobs:
         IFS='.' read -r -a version_parts <<< "$VERSION"
         new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
         sed -i "s/version=\"$VERSION\"/version=\"$new_version\"/" setup.py
-        git add setup.py
+        git add .
         git commit -m "New Version: $new_version"
-        git push origin HEAD:Dev
+        git push origin Dev
