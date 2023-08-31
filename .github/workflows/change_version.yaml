@@ -24,10 +24,8 @@ jobs:
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
       id: merge
       run: |
-        git checkout Dev
-        git branch -a
         git checkout main
-        git merge Dev
+        git merge Dev --allow-unrelated-histories
         git push
         git checkout Dev
 
