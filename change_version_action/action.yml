@@ -10,20 +10,28 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: |
-        if [[ "${{ inputs.is_release_input }}" == "true" ]]; then   
-          version=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
-          IFS='.' read -r -a version_parts <<< "$version"
-          new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
-          sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
-          git config user.email "actions@github.com"
-          git config user.name "Github Actions"
-          git add setup.py
-          git commit -m "New Version: $new_version"
-          git push origin HEAD:Dev
-          git tag "v$new_version"
-          git push origin "v$new_version"
-        else
-          echo "Not versioning"
-        fi
+    - name: Update version
+      if: ${{ inputs.is_release_input == 'true' }}
+      run: |
+        version=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
+        IFS='.' read -r -a version_parts <<< "$version"
+        new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
+        sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
+      shell: bash
+
+    - name: Commit and push
+      if: ${{ inputs.is_release_input == 'true' }}
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+        git add setup.py
+        git commit -m "New Version: $new_version"
+        git push origin HEAD:Dev
+      shell: bash
+
+    - name: Create tag and push
+      if: ${{ inputs.is_release_input == 'true' }}
+      run: |
+        git tag "v$new_version"
+        git push origin "v$new_version"
       shell: bash
