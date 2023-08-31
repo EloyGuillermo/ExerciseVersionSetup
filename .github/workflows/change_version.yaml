@@ -26,6 +26,8 @@ jobs:
       run: |
         git checkout main
         git merge Dev --allow-unrelated-histories
+        git config user.email "actions@github.com"
+        git config user.name "Github Actions"
         git push
         git checkout Dev
 
@@ -45,8 +47,6 @@ jobs:
         IFS='.' read -r -a version_parts <<< "$version"
         new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
         sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
-        git config user.email "actions@github.com"
-        git config user.name "Github Actions"
         git add setup.py
         git commit -m "New Version: $new_version"
         git push origin HEAD:Dev
