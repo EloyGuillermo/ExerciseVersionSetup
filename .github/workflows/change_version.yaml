@@ -6,7 +6,7 @@ on:
       IS_RELEASE:
         description: 'Check if it is release'
         required: false
-        default: 'false'
+        type: boolean
 
 jobs:
   ch_ver:
