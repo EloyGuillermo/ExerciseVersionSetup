@@ -21,6 +21,5 @@ jobs:
         ref: Dev
 
     - name: Set Version
+      if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
       uses: EloyGuillermo/ExerciseVersionSetup/change_version_action@Dev
-      with:
-        is_release_input: ${{ github.event.inputs.IS_RELEASE }}

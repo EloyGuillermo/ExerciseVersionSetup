@@ -1,37 +1,20 @@
 name: Change version setup
 description: 'Action to change version setup'
 
-inputs:
-  is_release_input:
-    description: 'Check if it is release'
-    required: false
-    default: 'false'
-
 runs:
   using: "composite"
   steps:
-    - name: Update version
-      if: ${{ inputs.is_release_input == 'true' }}
-      run: |
+    - run: |
         version=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
         IFS='.' read -r -a version_parts <<< "$version"
         new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
         sed -i "s/version=\"$version\"/version=\"$new_version\"/" setup.py
-      shell: bash
-
-    - name: Commit and push
-      if: ${{ inputs.is_release_input == 'true' }}
-      run: |
         git config user.email "actions@github.com"
-        git config user.name "GitHub Actions"
+        git config user.name "Github Actions"
         git add setup.py
         git commit -m "New Version: $new_version"
         git push origin HEAD:Dev
-      shell: bash
-
-    - name: Create tag and push
-      if: ${{ inputs.is_release_input == 'true' }}
-      run: |
         git tag "v$new_version"
         git push origin "v$new_version"
+        echo "Not creating a release tag."
       shell: bash
