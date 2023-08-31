@@ -36,8 +36,8 @@ jobs:
       run: |
         VERSION=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-        git tag "v$new_version"
-        git push origin "v$new_version"
+        git tag "v$VERSION"
+        git push origin "v$VERSION"
 
     - name: Update version in Dev
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
