@@ -28,6 +28,7 @@ jobs:
         git checkout main
         git merge -X theirs Dev
         git push origin main
+        git checkout Dev
 
     - name: Create Tag
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
@@ -42,7 +43,6 @@ jobs:
       env:
         VERSION: ${{ env.VERSION }}
       run: |
-        git branch -a
         IFS='.' read -r -a version_parts <<< "$VERSION"
         new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
         sed -i "s/version=\"$VERSION\"/version=\"$new_version\"/" setup.py
