@@ -26,9 +26,8 @@ jobs:
         git config user.email "actions@github.com"
         git config user.name "Github Actions"
         git checkout main
-        git merge -s recursive -X theirs Dev
-        git push
-        git checkout Dev
+        git merge -X theirs Dev
+        git push origin main
 
     - name: Create Tag
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
@@ -48,4 +47,4 @@ jobs:
         sed -i "s/version=\"$VERSION\"/version=\"$new_version\"/" setup.py
         git add .
         git commit -m "New Version: $new_version"
-        git push origin Dev
+        git push
