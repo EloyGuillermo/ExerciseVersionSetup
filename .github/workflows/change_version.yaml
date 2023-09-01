@@ -12,6 +12,7 @@ jobs:
   ch_ver:
     name: Change version setup
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
     steps:
 
     - name: Checkout Repo
@@ -20,7 +21,6 @@ jobs:
         fetch-depth: 0
 
     - name: Merge Dev to Main
-      if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
       id: merge
       run: |
         git config user.email "actions@github.com"
@@ -31,7 +31,6 @@ jobs:
         git checkout Dev
 
     - name: Create Tag
-      if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
       run: |
         VERSION=$(grep -oP "(?<=version=\")[^\"]+" setup.py)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -39,7 +38,6 @@ jobs:
         git push origin "v$VERSION"
 
     - name: Update version in Dev
-      if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
       env:
         VERSION: ${{ env.VERSION }}
       run: |
