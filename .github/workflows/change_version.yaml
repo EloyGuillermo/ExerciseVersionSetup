@@ -27,7 +27,8 @@ jobs:
         git config user.name "Github Actions"
         git checkout main
         git merge Dev --no-ff
-        git push origin main
+        git push
+        git checkout Dev
 
     - name: Create Tag
       if: ${{ github.event.inputs.IS_RELEASE == 'true' }}
